@@ -1,11 +1,11 @@
-# 🌸 Iris Classifier API
+# Iris Classifier API
 
 A machine learning web service built using **Flask** and **Docker** that predicts the species of Iris flowers based on sepal and petal measurements.
 The project uses the **Iris dataset** from Scikit-learn and a **Random Forest Classifier** for prediction.
 
 ---
 
-## 📘 Project Overview
+## Project Overview
 
 This project demonstrates how to:
 
@@ -16,7 +16,7 @@ This project demonstrates how to:
 
 ---
 
-## 🧠 Dataset
+## Dataset
 
 **Name:** Iris Dataset (built-in to Scikit-learn)
 **Features:**
@@ -36,9 +36,9 @@ This project demonstrates how to:
 
 ---
 
-## ⚙️ Setup and Installation
+## Setup and Installation
 
-### 🐍 Prerequisites
+### Prerequisites
 
 * Python 3.8+
 * pip installed
@@ -47,14 +47,14 @@ This project demonstrates how to:
 
 ---
 
-### 🧩 Clone the Repository
+### Clone the Repository
 
 ```bash
 git clone <your-repo-url>
 cd iris-flask-api
 ```
 
-### 📦 Install Dependencies
+### Install Dependencies
 
 ```bash
 pip install -r requirements.txt
@@ -62,7 +62,7 @@ pip install -r requirements.txt
 
 ---
 
-## 🏋️‍♂️ Train the Model
+## Train the Model
 
 Run the training script:
 
@@ -87,7 +87,7 @@ Model saved as model.joblib
 
 ---
 
-## 🚀 Run the API Locally
+## Run the API Locally
 
 Start the Flask app:
 
@@ -103,7 +103,7 @@ You’ll see:
 
 ---
 
-## 🌐 API Endpoints
+## API Endpoints
 
 ### 1️⃣ `GET /`
 
@@ -161,7 +161,7 @@ You’ll see:
 
 ---
 
-## 🧪 Testing with Postman
+## Testing with Postman
 
 Import the `IrisClassifier.postman_collection.json` file into Postman.
 
@@ -173,7 +173,7 @@ Run:
 
 ---
 
-## 🐳 Build and Run with Docker
+## Build and Run with Docker
 
 ### Build Image
 
@@ -195,7 +195,7 @@ http://127.0.0.1:5000
 
 ---
 
-## 📊 Example Metrics (from training)
+## Example Metrics (from training)
 
 ```json
 {
@@ -208,7 +208,7 @@ http://127.0.0.1:5000
 
 ---
 
-## 📚 Technologies Used
+## Technologies Used
 
 * Python 3
 * Flask
@@ -219,7 +219,7 @@ http://127.0.0.1:5000
 ---
 
 
-## 🧠 **Core Concept Questions**
+## **Core Concept Questions**
 
 ### 🔹 **1. Model Training vs Deployment**
 
@@ -354,8 +354,3 @@ In our Iris API:
 * Sanitize inputs to prevent injection or malicious data attacks.
 
 ---
-
-## 🧾 License
-
-This project is provided for educational purposes as part of the Machine Learning Deployment assignment.
-
