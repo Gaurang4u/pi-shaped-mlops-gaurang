@@ -172,6 +172,10 @@ Run:
 * `POST /predict` → send sample input `[5.1, 3.5, 1.4, 0.2]`
 
 ---
+<img width="1769" height="826" alt="image" src="https://github.com/user-attachments/assets/24bde65a-c6e3-437b-b9c2-ff394de34f94" />
+
+<img width="1769" height="826" alt="image" src="https://github.com/user-attachments/assets/664e6a5c-c810-42d1-bd3a-d68865cf92e1" />
+
 
 ## Build and Run with Docker
 
