@@ -67,7 +67,7 @@ pip install -r requirements.txt
 Run the training script:
 
 ```bash
-python train.py
+python train_model.py
 ```
 
 This will:
@@ -223,86 +223,93 @@ http://127.0.0.1:5000
 ---
 
 
-## **Core Concept Questions**
 
-### 🔹 **1. Model Training vs Deployment**
-
-* In *our project*, model training happens in a **Python script** (`train_model.py`) where we use **scikit-learn’s Iris dataset** and train a classifier such as `RandomForestClassifier` or `LogisticRegression`.
-* Deployment is done by the **Flask app (`app.py`)**, which loads the saved model and exposes it via the `/predict` endpoint.
+## **Core Concept Answers — Iris Classifier ML Deployment**
 
 ---
 
-### 🔹 **2. Saving Model with Joblib/Pickle**
+### **1️⃣ What is the difference between model training and model deployment?**
 
-* We save the trained model using:
+| Aspect          | Model Training                              | Model Deployment                                  |
+| --------------- | ------------------------------------------- | ------------------------------------------------- |
+| **Goal**        | Build and optimize a machine learning model | Make the trained model accessible for predictions |
+| **Environment** | Development / Jupyter / local scripts       | Production / web server / cloud                   |
+| **Process**     | Data preprocessing → training → evaluation  | Load trained model → serve predictions via API    |
+| **Tools**       | Scikit-learn, pandas, numpy                 | Flask, FastAPI, Docker, Gunicorn                  |
+| **Output**      | `.joblib` or `.pkl` model file              | Running API endpoint (`/predict`)                 |
+
+✅ In short:
+**Training** creates the model; **deployment** delivers it for real-world use.
+
+---
+
+### **2️⃣ Why do we save trained models using `joblib` or `pickle`?**
+
+* To **serialize** (save) the trained model object for later use.
+* So we **don’t need to retrain** the model every time the API starts.
+* `joblib` is optimized for large NumPy arrays (faster, more efficient than pickle).
+* Example:
 
   ```python
-  joblib.dump(model, 'model.joblib')
+  joblib.dump(model, "model.joblib")
+  model = joblib.load("model.joblib")
   ```
 
-  and in our Flask API, we load it using:
-
-  ```python
-  model = joblib.load('model.joblib')
-  ```
-
-  This allows the API to start instantly without retraining each time.
+✅ It ensures **consistency and reproducibility** across environments.
 
 ---
 
-### 🔹 **3. REST API Advantage**
+### **3️⃣ What are the advantages of serving ML models through REST APIs?**
 
-* We expose two REST endpoints:
-
-  * `GET /health` → to check API status
-  * `POST /predict` → to send input features and receive predicted species (`setosa`, `versicolor`, or `virginica`)
-
-This makes our ML model reusable — by web applications, mobile clients, or other backend services.
-
----
-
-### 🔹 **4. HTTP Methods**
-
-* `GET /health` → returns `"API is healthy"` to verify that the service is running.
-* `POST /predict` → accepts JSON input like:
-
-  ```json
-  {"input": [5.1, 3.5, 1.4, 0.2]}
-  ```
-
-  and returns:
-
-  ```json
-  {"prediction": "Iris-setosa"}
-  ```
+* **Accessibility:** Anyone can consume predictions via HTTP (web, app, service).
+* **Scalability:** Easier to handle multiple users and integrate into systems.
+* **Reusability:** Same API can serve multiple applications.
+* **Language Agnostic:** Any client (Java, JS, etc.) can call it via HTTP.
+* **Centralized Maintenance:** Update model in one place; all clients benefit.
 
 ---
 
-### 🔹 **5. Docker Importance**
+### **4️⃣ Explain the purpose of each HTTP method (GET, POST) used in your API.**
 
-* We create a `Dockerfile` that uses a Python base image, installs dependencies from `requirements.txt`, and runs Gunicorn to serve the Flask app.
-* Docker ensures our application runs consistently across different environments — local machines, servers, or cloud platforms — without dependency conflicts.
+| Method    | Endpoint   | Purpose                                              |
+| --------- | ---------- | ---------------------------------------------------- |
+| **GET /** | `/`        | Returns API information (metadata)                   |
+| **GET**   | `/health`  | Health check — ensures API and model are running     |
+| **POST**  | `/predict` | Accepts JSON input (features) and returns prediction |
 
----
-
-### 🔹 **6. Docker Consistency**
-
-* Our Dockerfile defines everything needed to reproduce the runtime environment:
-
-  ```dockerfile
-  FROM python:3.10-slim
-  COPY . /app
-  RUN pip install -r requirements.txt
-  CMD ["gunicorn", "-b", "0.0.0.0:5000", "app:app"]
-  ```
-
-  This ensures the application behaves identically in all environments.
+✅ `GET` → retrieve data
+✅ `POST` → send data (used when input payload exists)
 
 ---
 
-### 🔹 **7. Role of `requirements.txt`**
+### **5️⃣ What is Docker, and why is containerization important for ML deployment?**
 
-* We create a `requirements.txt` file listing dependencies:
+**Docker** is a platform that packages applications with all dependencies into **containers**.
+
+**Importance:**
+
+* Ensures **same environment everywhere** (no “it works on my machine” issues)
+* Simplifies **deployment and scaling**
+* Makes ML apps **portable, lightweight, and reproducible**
+* Each container runs in isolation, avoiding dependency conflicts.
+
+---
+
+### **6️⃣ How does Docker ensure consistency across environments (dev, staging, production)?**
+
+* By using a **Dockerfile** that defines exactly how the app runs:
+  OS base image, Python version, libraries, and ports.
+* The same image runs identically anywhere — local, server, or cloud.
+* No dependency mismatches or missing libraries.
+
+✅ Build once → run anywhere.
+
+---
+
+### **7️⃣ What is the role of `requirements.txt` in Python projects and Docker containers?**
+
+* Lists all Python dependencies required to run the project.
+* Example:
 
   ```
   flask
@@ -310,51 +317,58 @@ This makes our ML model reusable — by web applications, mobile clients, or oth
   joblib
   gunicorn
   ```
+* Used in Dockerfile:
 
-  This helps Docker (and others) install the exact versions of libraries required to run our API successfully.
+  ```dockerfile
+  RUN pip install -r requirements.txt
+  ```
+
+✅ Ensures consistent package versions and reproducible builds.
 
 ---
 
-### 🔹 **8. Exposing Ports**
+### **8️⃣ Why do we expose ports in Docker containers?**
 
-* In our Dockerfile:
+* Containers are isolated; exposing ports allows **external communication**.
+* Flask runs on port 5000 inside the container — exposing it makes it reachable from the host.
+* In Dockerfile:
 
   ```dockerfile
   EXPOSE 5000
   ```
-* When running the container:
+* In run command:
 
   ```bash
   docker run -p 5000:5000 iris-api
   ```
 
-  This maps the internal container port (5000) to the host machine’s port so we can access the Flask API via browser or Postman at `http://localhost:5000`.
+✅ Maps **container port → host port**.
 
 ---
 
-### 🔹 **9. Scaling to 1000 req/sec**
+### **9️⃣ How would you scale your API to handle 1000 requests per second?**
 
-* Our setup uses Gunicorn, which is production-ready.
-* To scale:
+* Use a **production WSGI server** (Gunicorn + multiple workers/threads).
+* Run **multiple containers** (replicas) behind a load balancer (e.g., Nginx, AWS ALB).
+* Use **caching** for repeated predictions.
+* Add **asynchronous processing** (Celery, Redis).
+* Deploy on **Kubernetes or ECS** for auto-scaling.
 
-  * Increase Gunicorn workers:
-
-    ```bash
-    gunicorn -w 4 -b 0.0.0.0:5000 app:app
-    ```
-  * Run multiple containers using Docker Compose or Kubernetes.
-  * Load balance requests using Nginx or a cloud load balancer.
+✅ Horizontal scaling + load balancing = high throughput.
 
 ---
 
-### 🔹 **10. Security for ML APIs**
+### **🔟 What are some security considerations when deploying ML models as APIs?**
 
-In our Iris API:
+* **Input validation** → prevent malformed JSON or code injection.
+* **Authentication & Authorization** → restrict access using API keys/JWT.
+* **Rate limiting** → prevent abuse (DDoS).
+* **HTTPS** → encrypt data in transit.
+* **Model privacy** → don’t expose internal model details or parameters.
+* **Logging & monitoring** → detect suspicious usage.
 
-* Validate JSON input to ensure it contains four numeric values.
-* Restrict public access to `/predict` using authentication or API keys.
-* Use HTTPS when deploying online.
-* Log requests and prediction outputs for monitoring.
-* Sanitize inputs to prevent injection or malicious data attacks.
+✅ Always treat ML APIs like any web service — secure endpoints and monitor access.
 
 ---
+
+Would you like me to format these answers into a **“Theory_Questions.md”** file and include it alongside your project (for submission or viva)?
