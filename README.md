@@ -80,9 +80,8 @@ This will:
 Example output:
 
 ```
-Model trained successfully.
-Accuracy: 0.97
-Model saved as model.joblib
+<img width="776" height="857" alt="image" src="https://github.com/user-attachments/assets/4cd55512-3bd6-4164-b12d-3974efb9140b" />
+
 ```
 
 ---
