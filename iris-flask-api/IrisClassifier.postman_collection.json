@@ -1,0 +1,88 @@
+{
+  "info": {
+    "name": "Iris Classifier API",
+    "_postman_id": "bafdbf1d-iris-api",
+    "description": "A REST API for predicting iris flower species using a trained Scikit-learn model served via Flask.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "GET / (Info)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://127.0.0.1:5000/",
+          "protocol": "http",
+          "host": ["127.0.0.1"],
+          "port": "5000",
+          "path": [""]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET /health",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://127.0.0.1:5000/health",
+          "protocol": "http",
+          "host": ["127.0.0.1"],
+          "port": "5000",
+          "path": ["health"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "POST /predict - Example 1 (Setosa)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"input\": [5.1, 3.5, 1.4, 0.2]\n}"
+        },
+        "url": {
+          "raw": "http://127.0.0.1:5000/predict",
+          "protocol": "http",
+          "host": ["127.0.0.1"],
+          "port": "5000",
+          "path": ["predict"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "POST /predict - Example 2 (Versicolor)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"input\": [6.0, 2.9, 4.5, 1.5]\n}"
+        },
+        "url": {
+          "raw": "http://127.0.0.1:5000/predict",
+          "protocol": "http",
+          "host": ["127.0.0.1"],
+          "port": "5000",
+          "path": ["predict"]
+        }
+      },
+      "response": []
+    }
+  ]
+}
